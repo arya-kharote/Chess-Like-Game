@@ -5,6 +5,27 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name = "viewport" content="width=device-width", initial-scale="1.0">
         <title>Document</title>
+        <style>
+    
+    .container {
+            text-align: center;
+        }
+
+        #find, #play {
+            padding: 10px 20px; 
+            font-size: 1rem;     
+            cursor: pointer;     
+            background-color: #007bff;  
+            color: white;        
+            border: none;        
+            border-radius: 5px;  
+            transition: background-color 0.3s; 
+        }
+
+        #find:hover, #play:hover {
+            background-color: #0056b3; 
+        }
+        </style>
         <link rel="stylesheet" href="style.css">
         <script src="/socket.io/socket.io.js"></script>
     </head>
@@ -12,18 +33,17 @@
         <h1>Chess Like Game</h1>
         <div>
             <p id="userCont">Player 1: <span id="user"></span></p>
-            <p id="oppnameCont">Player 2: <span id="oppname"></span></p>
+            <p id="oppNameCont">Player 2: <span id="oppName"></span></p>
         </div>
         <br>
-        <p id="whos turn">Player1 turn</p>
         <div>
-            <p id="enter name">Enter your name: </p>
+            <p id="enterName">Enter your name: </p>
             <input type="text" placeholder="Name" id ="name" autocapitalize="off">
-
         </div>
-        <button id="find">Search for Player</button>
+        <button id="find" >Search for Player</button>
+
         
-        <div id="board">
+        <div id="bigCont">
             <div id = "cont">
                 <button id = "btn1" class = "btn"> A-P1 </button>
                 <button id = "btn2" class = "btn"> A-P2  </button>
@@ -53,39 +73,61 @@
 
             </div>
         </div>
+        <br>
+        <p id="enterMove">Enter your move: </p>
+        <input type="text" placeholder="Move" id="move" autocapitalize="off">
+        <button id="play">Play</button>
+
     </body>
     <script>
-        
+
         const socket=io();
 
         let name;
         document.getElementById("find").addEventListener("click",function(){
             name=document.getElementById("name").value
+
             document.getElementById("user").innerText=name
             if(name=null || name==""){
                 alert("Enter name")
             }
             else{
                 //pass name of user to backend
+                name=document.getElementById("name").value
+
                 socket.emit("find",{name:name})
-
-
+                document.getElementById("find").disabled=true
             }
         })
 
         socket.on("find",(e)=>{
             let allPlayersArray = e.allPlayers
-            console.log("Started")
             console.log(allPlayersArray)
+            console.log(name)
+
             let oppName
             let value
-            const foundObj = allPlayersArray.find(obj=>obj.p1.p1name=='${name}' || obj.p2.p2name=='${name}') 
-            foundObj.p1.p1name=='${name}' ? oppName=foundObj.p2.p2name : oppName=foundObj.p1.p1name
-            foundObj.p1.p1name=='${name}' ? value=foundObj.p2.p2value : value=foundObj.p1.p1value
+            const foundObj = allPlayersArray.find(obj=>obj?.p1?.p1name==name || obj?.p2?.p2name==name) 
+            foundObj.p1.p1name==name ? oppName=foundObj.p2.p2name : oppName=foundObj.p1.p1name
 
-            document.getElementById("oppname").innerText="oppName"
-            document.getElementById("value").innerText=value
-
+            document.getElementById("oppName").innerText=oppName
         })
+
+        document.getElementById('play').addEventListener('click', () => {
+                const move = document.getElementById('move').value.trim();
+                if (move) {
+                    socket.emit('makeMove', { move });
+                } else {
+                    alert('Please enter your move.');
+                }
+            });
+        
+            socket.on('updateBoard', ({ piece, location }) => {
+            const button = document.getElementById(`btn${location}`);
+            if (button) {
+                button.textContent = piece;
+            }
+        });
+
     </script>
 </html>
