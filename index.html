@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name = "viewport" content="width=device-width", initial-scale="1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="/socket.io/socket.io.js"></script>
+    </head>
+    <body>
+        <h1>Chess Like Game</h1>
+        <div>
+            <p id="userCont">Player 1: <span id="user"></span></p>
+            <p id="oppnameCont">Player 2: <span id="oppname"></span></p>
+        </div>
+        <br>
+        <p id="whos turn">Player1 turn</p>
+        <div>
+            <p id="enter name">Enter your name: </p>
+            <input type="text" placeholder="Name" id ="name" autocapitalize="off">
+
+        </div>
+        <button id="find">Search for Player</button>
+        
+        <div id="board">
+            <div id = "cont">
+                <button id = "btn1" class = "btn"> A-P1 </button>
+                <button id = "btn2" class = "btn"> A-P2  </button>
+                <button id = "btn3" class = "btn"> A-H1 </button>
+                <button id = "btn4" class = "btn"> A-H2 </button>
+                <button id = "btn5" class = "btn"> A-P3 </button>
+                <button id = "btn6" class = "btn"> </button>
+                <button id = "btn7" class = "btn"> </button>
+                <button id = "btn8" class = "btn"> </button>
+                <button id = "btn9" class = "btn"> </button>
+                <button id = "btn10" class = "btn"> </button>
+                <button id = "btn11" class = "btn"> </button>
+                <button id = "btn12" class = "btn"> </button>
+                <button id = "btn13" class = "btn"> </button>
+                <button id = "btn14" class = "btn"> </button>
+                <button id = "btn15" class = "btn"> </button>
+                <button id = "btn16" class = "btn"> </button>
+                <button id = "btn17" class = "btn"> </button>
+                <button id = "btn18" class = "btn"> </button>
+                <button id = "btn19" class = "btn"> </button>
+                <button id = "btn20" class = "btn"> </button>
+                <button id = "btn21" class = "btn"> B-P1 </button>
+                <button id = "btn22" class = "btn"> B-P2</button>
+                <button id = "btn23" class = "btn"> B-H1</button>
+                <button id = "btn24" class = "btn"> B-H2 </button>
+                <button id = "btn25" class = "btn"> B-P3 </button>
+
+            </div>
+        </div>
+    </body>
+    <script>
+        
+        const socket=io();
+
+        let name;
+        document.getElementById("find").addEventListener("click",function(){
+            name=document.getElementById("name").value
+            document.getElementById("user").innerText=name
+            if(name=null || name==""){
+                alert("Enter name")
+            }
+            else{
+                //pass name of user to backend
+                socket.emit("find",{name:name})
+
+
+            }
+        })
+
+        socket.on("find",(e)=>{
+            let allPlayersArray = e.allPlayers
+            console.log("Started")
+            console.log(allPlayersArray)
+            let oppName
+            let value
+            const foundObj = allPlayersArray.find(obj=>obj.p1.p1name=='${name}' || obj.p2.p2name=='${name}') 
+            foundObj.p1.p1name=='${name}' ? oppName=foundObj.p2.p2name : oppName=foundObj.p1.p1name
+            foundObj.p1.p1name=='${name}' ? value=foundObj.p2.p2value : value=foundObj.p1.p1value
+
+            document.getElementById("oppname").innerText="oppName"
+            document.getElementById("value").innerText=value
+
+        })
+    </script>
+</html>

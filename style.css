@@ -1,0 +1,84 @@
+/* General body styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Header styling */
+h1 {
+    color: #333;
+    font-size: 2.5rem;
+}
+
+/* Player information section styling */
+div p {
+    font-size: 1.2rem;
+    margin: 5px 0;
+}
+
+/* Input and button styling */
+input[type="text"] {
+    padding: 10px;
+    width: 250px;
+    font-size: 1rem;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button { 
+    font-size: 1rem;      /* Text color */
+    cursor: pointer;     /* Pointer cursor on hover */
+    display: flex;       /* Use flexbox to center text */
+    align-items: center; /* Vertically center the text */
+    justify-content: center; /* Horizontally center the text */
+    transition: background-color 0.3s; /* Smooth background color transition */
+    padding: 10px 20px;
+    color: #fff;
+    background-color: #007bff;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Board container styling */
+#board {
+    margin-top: 20px;
+    display: inline-block;
+}
+
+#cont {
+    display: grid;
+    grid-template-columns: repeat(5, 60px);
+    grid-template-rows: repeat(5, 60px);
+    gap: 5px;
+    justify-content: center;
+}
+
+/* Button (cell) styling for the board */
+.btn {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+    color: #333;
+    background-color: #fff;
+    border: 2px solid #333;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #f0f0f0;
+}
+
+/* Turn indicator styling */
+#whos turn {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-top: 20px;
+}
