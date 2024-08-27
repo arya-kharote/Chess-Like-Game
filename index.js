@@ -16,6 +16,9 @@ let arr=[]
 let playingArray = []
 io.on("connection",(socket)=>{
     socket.on("find",(e)=>{
+        console.log("Socket on")
+        console.log(e.name)
+
         if(e.name!=null){
             arr.push(e.name)
             //connect two players
@@ -40,6 +43,13 @@ io.on("connection",(socket)=>{
             }
         }
     })
+
+    socket.on('makeMove', ({ move }) => {
+        const [piece, location] = move.split(':'); 
+        const locationNumber = location.charCodeAt(0) - 25; 
+
+        io.emit('updateBoard', { piece, location: locationNumber });
+    });
 })
 
 app.get("/",(req,res)=>{
